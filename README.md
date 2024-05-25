@@ -1,6 +1,6 @@
 # noodle_timer_f
 
-stop with bring up smartphone
+You can stop the timer ringing by only by lifting up
 
 ## Getting Started
 
