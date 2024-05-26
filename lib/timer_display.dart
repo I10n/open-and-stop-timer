@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:noodle_timer_f/storage.dart';
 import 'package:stop_watch_timer/stop_watch_timer.dart';
 
-
 class CountDownPage extends StatefulWidget {
-  final int duration;
-  final VoidCallback? onReset;
-  const CountDownPage({super.key, required this.duration, required this.onReset});
+  final TimerStorage timerStorage;
+  final VoidCallback onReset;
+  const CountDownPage({super.key, required this.timerStorage, required this.onReset});
 
   @override
   State<CountDownPage> createState() => _CountDownPageState();
@@ -13,18 +13,23 @@ class CountDownPage extends StatefulWidget {
 
 class _CountDownPageState extends State<CountDownPage> {
   late StopWatchTimer _stopWatchTimer;
+  // int duration = 60 * 1;
   final _scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-
-    _stopWatchTimer = StopWatchTimer(
-        mode: StopWatchMode.countDown,
-        presetMillisecond: 1000 * widget.duration,
-        onEnded: widget.onReset
+    widget.timerStorage.readTimer().then((int duration) =>
+        setState(() {
+          // duration = t;
+          _stopWatchTimer = StopWatchTimer(
+              mode: StopWatchMode.countDown,
+              presetMillisecond: 1000 * duration,
+              onEnded: widget.onReset
+          );
+          _stopWatchTimer.onStartTimer();
+        })
     );
-    _stopWatchTimer.onStartTimer();
   }
 
   @override

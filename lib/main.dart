@@ -1,62 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:noodle_timer_f/storage.dart';
 import 'package:noodle_timer_f/timer_display.dart';
+import 'package:noodle_timer_f/timer_setting_display.dart';
 
+
+
+import 'dart:async';
+
+// import 'package:flutter_test/flutter_test.dart';
+
+// void main() async {
+//   test('completer', () async {
+//     Completer completer = Completer();//2
+//
+//     List result = [];
+//
+//     // 1
+//     Future.delayed(const Duration(seconds: 1)).then((value) {
+//       result.add('delayed');
+//       expect(completer.isCompleted, false);
+//       completer.complete('delay finished');//3
+//       expect(completer.isCompleted, true);
+//     });
+//
+//     result.add('before future');
+//     result.add(await completer.future); //4
+//     result.add('after future');
+//
+//     expect(result.length, 4);
+//     expect(result[0], 'before future');
+//     expect(result[1], 'delayed');
+//     expect(result[2], 'delay finished');
+//     expect(result[3], 'after future');
+//   });
+// }
+
+//TODO: use "complete" for get enough time to display timer 参考https://flutter.salon/dart/completer/
 void main() {
+  // TimerStorage timerStorage = TimerStorage();
   runApp(const MyApp());
 }
-//
-// class MyApp extends StatelessWidget {
-//   const MyApp({Key? key}) : super(key: key);
-//
-//   // This widget is the root of your application.
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         primarySwatch: Colors.green,
-//       ),
-//       home: MyHomePage(),
-//     );
-//   }
-// }
-//
-// class MyHomePage extends StatelessWidget {
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return CountDownPage(duration: 10,
-//       onReset: () {
-//         Navigator.push(
-//             context, MaterialPageRoute(builder: (context) => NextPage()));
-//       },
-//     );
-//   }
-// }
-//
-// class NextPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Timer Setting '),
-//       ),
-//       body: Center(
-//         child: ElevatedButton(
-//           child: Text("START"),
-//           onPressed: () {
-//             // ここにボタンを押した時に呼ばれるコードを書く
-//             Navigator.pop(context);
-//           },
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
 
 class MyApp extends StatelessWidget {
+  // final TimerStorage timerStorage;
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
@@ -69,38 +55,69 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => MyHomePage(),
-        '/timer_setting': (context) => NextPage()
-      },
-
+        '/': (context) =>
+            CountDownPage(
+                timerStorage: TimerStorage(),
+                onReset: () => Navigator.of(context).pushNamedAndRemoveUntil('/timer_setting',(_)=>false),
+            ),
+        '/timer_setting': (context) =>
+            TimerSettingPage(
+                timerStorage: TimerStorage(),
+                onStartTimer: () => Navigator.of(context).pushNamed('/')
+            )
+      }
     );
   }
 }
 
-
-class MyHomePage extends StatelessWidget {
-
-  @override
-  Widget build(BuildContext context) {
-    return CountDownPage(duration: 10,
-      onReset: () => Navigator.of(context).pushNamed('/timer_setting')
-    );
-  }
-}
-
-class NextPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Timer Setting '),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          child: Text("START"),
-          onPressed: () => Navigator.of(context).pushNamed('/')
-        ),
-      ),
-    );
-  }
-}
+//Flutter Demo
+// class FlutterDemo extends StatefulWidget {
+//   const FlutterDemo({super.key, required this.storage});
+//
+//   final TimerStorage storage;
+//
+//   @override
+//   State<FlutterDemo> createState() => _FlutterDemoState();
+// }
+//
+// class _FlutterDemoState extends State<FlutterDemo> {
+//   int _counter = 0;
+//
+//   @override
+//   void initState() {
+//     super.initState();
+//     widget.storage.readTimer().then((value) {
+//       setState(() {
+//         _counter = value;
+//       });
+//     });
+//   }
+//
+//   Future<File> _incrementCounter() {
+//     setState(() {
+//       _counter++;
+//     });
+//
+//     // Write the variable as a string to the file.
+//     return widget.storage.writeTimer(_counter);
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('Reading and Writing Files'),
+//       ),
+//       body: Center(
+//         child: Text(
+//           'Button tapped $_counter time${_counter == 1 ? '' : 's'}.',
+//         ),
+//       ),
+//       floatingActionButton: FloatingActionButton(
+//         onPressed: _incrementCounter,
+//         tooltip: 'Increment',
+//         child: const Icon(Icons.add),
+//       ),
+//     );
+//   }
+// }
