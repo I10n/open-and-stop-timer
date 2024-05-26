@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:noodle_timer_f/timer_display.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,21 +22,14 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Tick Tack Tick Tack...'),
-      ),
-      body: Center(
-        child: ElevatedButton(
-          child: Text("STOP"),
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => NextPage()));
-          },
-        ),
-      ),
+    return CountDownPage(duration: 10,
+      onReset: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => NextPage()));
+      },
     );
   }
 }
