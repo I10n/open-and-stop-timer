@@ -1,5 +1,7 @@
+import 'package:alarm/alarm.dart';
 import 'package:circular_seek_bar/circular_seek_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:noodle_timer_f/CONST.dart';
 import 'package:noodle_timer_f/storage.dart';
 
 class TimerSettingPage extends StatefulWidget {
@@ -85,6 +87,12 @@ class _TimerSettingPageState extends State<TimerSettingPage> {
                       ],
                     )
                 ),)),
+            SizedBox(height: 20,),
+            ElevatedButton(
+                child: Text("STOP Alarm"),
+                onPressed: () => Alarm.stop(ALARM_ID)
+            ),
+          
           ]
         ),
       )

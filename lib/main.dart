@@ -1,4 +1,11 @@
+import 'dart:io';
+
+import 'package:alarm/alarm.dart';
+import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:noodle_timer_f/CONST.dart';
+import 'package:noodle_timer_f/stop_alarm_if_device_lifted_up.dart';
 import 'package:noodle_timer_f/storage.dart';
 import 'package:noodle_timer_f/timer_display.dart';
 import 'package:noodle_timer_f/timer_setting_display.dart';
@@ -6,6 +13,8 @@ import 'package:noodle_timer_f/timer_setting_display.dart';
 
 
 import 'dart:async';
+
+import 'package:sensors_plus/sensors_plus.dart';
 
 // import 'package:flutter_test/flutter_test.dart';
 
@@ -35,9 +44,17 @@ import 'dart:async';
 //   });
 // }
 
+
 //TODO: use "complete" for get enough time to display timer 参考https://flutter.salon/dart/completer/
-void main() {
-  // TimerStorage timerStorage = TimerStorage();
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations(
+      [
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ],
+  );
+  await Alarm.init();
   runApp(const MyApp());
 }
 
@@ -59,11 +76,13 @@ class MyApp extends StatelessWidget {
             CountDownPage(
                 timerStorage: TimerStorage(),
                 onReset: () => Navigator.of(context).pushNamedAndRemoveUntil('/timer_setting',(_)=>false),
+                onAlarmSet: (AlarmSettings settings) => Alarm.set(alarmSettings: settings),
+                onRingAlarm: Alarm.ringStream.stream.listen((_) => stopAlarm_if_DeviceLiftedUp(() async => await Alarm.stop(ALARM_ID)))
             ),
         '/timer_setting': (context) =>
             TimerSettingPage(
                 timerStorage: TimerStorage(),
-                onStartTimer: () => Navigator.of(context).pushNamed('/')
+                onStartTimer: () => Navigator.of(context).pushNamed('/'),
             )
       }
     );
