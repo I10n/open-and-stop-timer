@@ -1,11 +1,8 @@
 import 'dart:io';
 
 import 'package:alarm/alarm.dart';
-import 'package:alarm/model/alarm_settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:noodle_timer_f/CONST.dart';
-import 'package:noodle_timer_f/stop_alarm_if_device_lifted_up.dart';
 import 'package:noodle_timer_f/storage.dart';
 import 'package:noodle_timer_f/timer_display.dart';
 import 'package:noodle_timer_f/timer_setting_display.dart';
@@ -68,6 +65,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        // useMaterial3: false,
         primarySwatch: Colors.green,
       ),
       initialRoute: '/',
@@ -76,8 +74,6 @@ class MyApp extends StatelessWidget {
             CountDownPage(
                 timerStorage: TimerStorage(),
                 onReset: () => Navigator.of(context).pushNamedAndRemoveUntil('/timer_setting',(_)=>false),
-                onAlarmSet: (AlarmSettings settings) => Alarm.set(alarmSettings: settings),
-                onRingAlarm: Alarm.ringStream.stream.listen((_) => stopAlarm_if_DeviceLiftedUp(() async => await Alarm.stop(ALARM_ID)))
             ),
         '/timer_setting': (context) =>
             TimerSettingPage(
@@ -88,55 +84,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-//Flutter Demo
-// class FlutterDemo extends StatefulWidget {
-//   const FlutterDemo({super.key, required this.storage});
-//
-//   final TimerStorage storage;
-//
-//   @override
-//   State<FlutterDemo> createState() => _FlutterDemoState();
-// }
-//
-// class _FlutterDemoState extends State<FlutterDemo> {
-//   int _counter = 0;
-//
-//   @override
-//   void initState() {
-//     super.initState();
-//     widget.storage.readTimer().then((value) {
-//       setState(() {
-//         _counter = value;
-//       });
-//     });
-//   }
-//
-//   Future<File> _incrementCounter() {
-//     setState(() {
-//       _counter++;
-//     });
-//
-//     // Write the variable as a string to the file.
-//     return widget.storage.writeTimer(_counter);
-//   }
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: const Text('Reading and Writing Files'),
-//       ),
-//       body: Center(
-//         child: Text(
-//           'Button tapped $_counter time${_counter == 1 ? '' : 's'}.',
-//         ),
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: _incrementCounter,
-//         tooltip: 'Increment',
-//         child: const Icon(Icons.add),
-//       ),
-//     );
-//   }
-// }

@@ -1,11 +1,9 @@
 import 'package:alarm/alarm.dart';
 import 'package:alarm/model/alarm_settings.dart';
-import 'package:flutter/widgets.dart';
-import 'package:noodle_timer_f/CONST.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
 //TODO if the value have changed rather than the previous execution (about UI(66ms) before), STOPTIMER
-void stopAlarm_if_DeviceLiftedUp(VoidCallback onStopTimer) {
+Future<void> stopAlarm_if_DeviceLiftedUp(AlarmSettings alarm_settings) async {
   double y_accel = 0;
   Stream<UserAccelerometerEvent>? _userAccelerometerEvent;
   //Calculate acceleration change
@@ -13,11 +11,11 @@ void stopAlarm_if_DeviceLiftedUp(VoidCallback onStopTimer) {
       samplingPeriod: SensorInterval.uiInterval).listen(
           (UserAccelerometerEvent event) async{
             y_accel = event.y;
-            print(y_accel);
+            // print(y_accel);
+            print(alarm_settings.id);
 
             if(y_accel.abs() > 1) {
-              // await Alarm.stop(ALARM_ID);
-              onStopTimer();
+              await Alarm.stop(alarm_settings.id);
             }
           });
 

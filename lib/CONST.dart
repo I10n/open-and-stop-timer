@@ -1,1 +1,0 @@
-const int ALARM_ID=42;

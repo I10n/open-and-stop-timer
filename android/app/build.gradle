@@ -24,8 +24,10 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.noodle_timer_f"
-    compileSdk flutter.compileSdkVersion
-    ndkVersion flutter.ndkVersion
+//    compileSdk flutter.compileSdkVersion
+    compileSdkVersion 34
+//    ndkVersion flutter.ndkVersion
+    ndkVersion "25.1.8937393"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

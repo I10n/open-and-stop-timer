@@ -40,6 +40,7 @@ dependencies:
   circular_seek_bar: ^1.1.1
   alarm: ^3.1.4
   sensors_plus: ^5.0.1
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:
@@ -67,6 +68,8 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+  assets:
+      - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
