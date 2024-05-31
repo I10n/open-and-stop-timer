@@ -3,47 +3,39 @@
 アラームの停止をスマホを持ち上げるだけで行えます
 
 # DEMO
-
-![カップラーメンの上のスマホタイマー](https://github.com/I10n/open-and-stop-timer/assets/89304633/e12801a1-8289-40d3-9429-2fc775fd4d24)
-
+<img width="320px" alt="timer_page" src="https://github.com/I10n/open-and-stop-timer/assets/89304633/f79f77aa-ac98-4e81-943c-9c059c22ffe2">
+<img width="320px" alt="timer_setting_page" src="https://github.com/I10n/open-and-stop-timer/assets/89304633/94ddad93-6041-4027-8de3-b366df622872">
 
 # Requirement
 
 * flutter SDK
 * Android Studio Iguana | 2023.2.1
-* 動作テストデバイス POCO X3 (MIUI Global 13.0.3)
+* Android端末
 
 # Installation
-flutterSDK, AndroidStudioが必要
-## 1.flutter環境を用意する
-Windowsの場合，
-1. flutter SDKをインストール https://docs.flutter.dev/release/archive?tab=windows
-2. インストール・解凍したディレクトリの`flutter/bin`にPathを通す
-3. Pathが通っているか確認．
-```bash
-flutter doctor
-```
-4.`flutter doctor`の結果に従って，環境構築（Android Studioのインストールとか...）
-
-## 2.プロジェクトを動かす
-
-1. このリポジトリを複製
-```bash
-git clone https://github.com/I10n/open-and-stop-timer.git
-```
-2. Android Studioでプロジェクトを開く
-3. Android Studioで[仮想端末を作り，アプリをRun](https://developer.android.com/codelabs/basic-android-kotlin-compose-emulator?hl=ja#2) or USBデバック有効にしたスマホをUSBでパソコンにつなぎ，アプリをRun
+2つ方法がある
+1. flutter環境（flutterSDK & AndroidStudio）でこのレポジトリを`git clone`してRun
+2. releaseのapp-release.apkをAndroid端末にインストールして実行
 
 # Usage
 
-1. カップラーメンにお湯を注ぐ
-2. スマホで`noodle_timer_f`アプリを開いて，カップラーメンの上に乗せる（タイマーセット）
-3. アラームが鳴ったら，タイマーを放り投げ（`Reset`ボタンを押さなくても止まる），蓋を破き捨てる
+1. お湯を注いだカップラーメンの上に，`noodle_timer_f`アプリを開いたスマホを乗せる
+<img width="160px" alt="noodle1" src="https://github.com/I10n/open-and-stop-timer/assets/89304633/4f75a79f-5abb-4a0c-8a5e-dcf2070a4d6f">
+
+
+2. アラームが鳴ったら
+<img width="160px" alt="noodle3" src="https://github.com/I10n/open-and-stop-timer/assets/89304633/2fe5c87c-aafa-47dd-8784-dbb1fefbf7dd">
+
+
+3. アラームは退けるだけで止まる
+<img width="160px" alt="noodle4" src="https://github.com/I10n/open-and-stop-timer/assets/89304633/99ae3e48-f097-41e1-86c8-60a3551cfef4">
+
+
 4. ラーメンを食べる
 
 # Note
 
-1. 持ち上げたらアラームが止まる機能は，アプリを開いた時のタイマーでのみ動作します
+1. 持ち上げたらアラームが止まる機能は，アプリを開いた初回時のタイマーでのみ動作します
 2. タイマー時間を変更したい場合は，時間変更=>`START`ボタン押す の一連の動作が必要
 
 # License
