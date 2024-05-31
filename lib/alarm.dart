@@ -3,7 +3,6 @@
 import 'dart:io';
 
 import 'package:alarm/model/alarm_settings.dart';
-import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 
 //alarmSetting を一つ決定・保持します
 class AlarmSettingsHelper{
@@ -15,7 +14,6 @@ class AlarmSettingsHelper{
         assetAudioPath: 'assets/alarm.mp3',
         loopAudio: true,
         vibrate: true,
-        volume: await FlutterVolumeController.getVolume(),
         notificationTitle: 'noodle timer flutter',
         notificationBody: 'Now is time to eat noodle',
         enableNotificationOnKill: Platform.isIOS

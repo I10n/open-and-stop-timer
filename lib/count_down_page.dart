@@ -68,7 +68,7 @@ class _CountDownPageState extends State<CountDownPage> {
       subscription ??=
           Alarm.ringStream.stream.listen((AlarmSettings alarmSettings) {
             //Alarmが鳴った際，加速度を感知すると{Alarm鳴りを停止, 画面遷移を行う}
-            stopAlarm_if_DeviceLiftedUp(alarmSettings, prepareForDispose).then((
+            stopAlarm_if_DeviceLiftedUp(alarmSettings, widget.onReset).then((
                 StreamSubscription<
                     UserAccelerometerEvent> streamSubscription) async =>
             {
@@ -95,11 +95,6 @@ class _CountDownPageState extends State<CountDownPage> {
       subscription?.cancel();
     });
     loadAlarms();
-  }
-
-  void prepareForDispose() {
-    deleteStreams();
-    widget.onReset();
   }
 
   @override
@@ -154,7 +149,8 @@ class _CountDownPageState extends State<CountDownPage> {
                         {
                           for(AlarmSettings settings in Alarm.getAlarms()){
                             Alarm.stop(settings.id)
-                          }
+                          },
+                          widget.onReset
                         },
                         child: const Text('Reset'),
                       ),
