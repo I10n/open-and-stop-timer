@@ -1,7 +1,6 @@
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 import 'package:noodle_timer_f/storage.dart';
 import 'package:noodle_timer_f/count_down_page.dart';
 import 'package:noodle_timer_f/timer_setting_page.dart';
@@ -16,7 +15,6 @@ Future<void> main() async {
       ],
   );
   await Alarm.init();//Alarm library を使うために必要
-  await FlutterVolumeController.updateShowSystemUI(true);//現在の音量を取得するために必要
   runApp(const MyApp());
 }
 
