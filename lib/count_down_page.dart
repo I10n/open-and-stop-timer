@@ -150,7 +150,7 @@ class _CountDownPageState extends State<CountDownPage> {
                           for(AlarmSettings settings in Alarm.getAlarms()){
                             Alarm.stop(settings.id)
                           },
-                          widget.onReset
+                          widget.onReset()
                         },
                         child: const Text('Reset'),
                       ),
