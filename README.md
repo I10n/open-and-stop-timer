@@ -40,6 +40,6 @@
 
 # License
 
-"noodle_timer_f" is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
+`noodle_timer_f` is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
 
 使用した音素材：OtoLogic(https://otologic.jp)
