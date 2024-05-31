@@ -1,25 +1,25 @@
+import 'dart:async';
+
 import 'package:alarm/alarm.dart';
 import 'package:alarm/model/alarm_settings.dart';
+import 'package:flutter/widgets.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 
-//TODO if the value have changed rather than the previous execution (about UI(66ms) before), STOPTIMER
-Future<void> stopAlarm_if_DeviceLiftedUp(AlarmSettings alarm_settings) async {
-  double y_accel = 0;
-  Stream<UserAccelerometerEvent>? _userAccelerometerEvent;
-  //Calculate acceleration change
+//デバイスが持ち上げられるような加速度を検知したときにonResetを実行するように，加速度を周期検知するようなStreamSubscriptionを返す関数
+Future<StreamSubscription<UserAccelerometerEvent>> stopAlarm_if_DeviceLiftedUp(AlarmSettings alarmSettings, VoidCallback onReset) async{
+  double yAccel = 0;
+
+  //デバイス加速度を周期検知するStreamSubscription
   final subscription = userAccelerometerEventStream(
       samplingPeriod: SensorInterval.uiInterval).listen(
           (UserAccelerometerEvent event) async{
-            y_accel = event.y;
-            // print(y_accel);
-            print(alarm_settings.id);
+            yAccel = event.y;
+            print(yAccel);
+            // print(alarm_settings.id);
 
-            if(y_accel.abs() > 1) {
-              await Alarm.stop(alarm_settings.id);
+            if(yAccel.abs() > 1) {//持ち上げられるような加速度を検知したとき
+              await Alarm.stop(alarmSettings.id).then((_) => onReset());
             }
           });
-
-  // subscription.cancel();
-  //if device listed up
-  //  onStopRinging();
+  return subscription;
 }

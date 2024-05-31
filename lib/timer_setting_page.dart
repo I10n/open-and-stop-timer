@@ -1,11 +1,14 @@
+//新たなタイマーの実行，タイマー時間設定，タイマー時間保存　を行う画面を実装する
+
 import 'package:alarm/alarm.dart';
+import 'package:alarm/model/alarm_settings.dart';
 import 'package:circular_seek_bar/circular_seek_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:noodle_timer_f/storage.dart';
 
 class TimerSettingPage extends StatefulWidget {
-  final TimerStorage timerStorage;
-  final VoidCallback onStartTimer;
+  final TimerStorage timerStorage;//タイマー時間の書き込み・読み出しを手伝う
+  final VoidCallback onStartTimer;//タイマーの実行としての画面遷移トリガー
 
   const TimerSettingPage({super.key, required this.timerStorage, required this.onStartTimer});
 
@@ -14,27 +17,26 @@ class TimerSettingPage extends StatefulWidget {
 }
 
 class _TimerSettingPageState extends State<TimerSettingPage> {
-  int time = 60 * 2;
+  int _duration = 60 * 3;//タイマー時間(sec)
   final ValueNotifier<double> _valueNotifier = ValueNotifier(0);
   
   @override
   void initState() {
     super.initState();
+    //保存してあるタイマー時間（初期: 3分）を読み出す
     widget.timerStorage.readTimer().then((int duration) =>
         setState(() {
-          time = duration;
+          _duration = duration;
         }));
   }
 
   void durationSelect() async{
-    // widget.timerStorage.writeTimer((duration.inSeconds * 60).toInt());
-    widget.timerStorage.writeTimer(((_valueNotifier.value/10).toInt()*60).toInt());
+    //タイマー時間を保存する
+    await widget.timerStorage.writeTimer((_valueNotifier.value~/10*60).toInt());
   }
 
   @override
   void dispose() async{
-    //TODO dispose cannot wait for async durationSelect, dispose can await the function's execution?
-    await Alarm.stop(Alarm.getAlarms()[0].id);
     durationSelect();
     super.dispose();
   }
@@ -43,25 +45,25 @@ class _TimerSettingPageState extends State<TimerSettingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Timer Setting '),
+        title: const Text('Timer Setting '),
       ),
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ElevatedButton(
-                  child: Text("START"),
+                  child: const Text("START"),
                   onPressed: () => {
                     widget.onStartTimer(),
                     durationSelect()
                   }
             ),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             CircularSeekBar(
               minProgress: 10,
                 width: double.infinity,
                 height: 250,
-                progress: time / 6,
+                progress: _duration / 6,
                 barWidth: 8,
                 startAngle: 90,
                 sweepAngle: 360,
@@ -82,17 +84,20 @@ class _TimerSettingPageState extends State<TimerSettingPage> {
                     builder: (_, double value, __) => Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Text('${(value/10).toInt()}'),
-                        Text('minutes'),
+                        Text('${value~/10}'),
+                        const Text('minutes'),
                       ],
                     )
                 ),)),
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
             ElevatedButton(
-                child: Text("STOP Alarm"),
-                onPressed: () async => await Alarm.stop(Alarm.getAlarms()[0].id)
+                child: const Text("STOP Alarm"),
+                onPressed: () async => {
+                  for(AlarmSettings settings in Alarm.getAlarms()){
+                    Alarm.stop(settings.id)
+                  }
+                }
             ),
-          
           ]
         ),
       )

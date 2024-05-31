@@ -1,3 +1,5 @@
+//タイマーの時間をStorageに書き込み・読み出しし，保存できるclassを定義
+
 import 'dart:async';
 import 'dart:io';
 
@@ -25,7 +27,7 @@ class TimerStorage {
       return int.parse(contents);
     } catch (e) {
       // If it was no data, return 60*3(3minutes)
-      return 60 * 1;
+      return 60 * 3;
     }
   }
 

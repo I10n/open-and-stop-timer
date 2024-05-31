@@ -1,3 +1,5 @@
+//Androidの権限を確認するための関数たち
+
 import 'package:alarm/alarm.dart';
 import 'package:permission_handler/permission_handler.dart';
 

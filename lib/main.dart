@@ -1,85 +1,48 @@
-import 'dart:io';
-
 import 'package:alarm/alarm.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_volume_controller/flutter_volume_controller.dart';
 import 'package:noodle_timer_f/storage.dart';
-import 'package:noodle_timer_f/timer_display.dart';
-import 'package:noodle_timer_f/timer_setting_display.dart';
-
-
-
+import 'package:noodle_timer_f/count_down_page.dart';
+import 'package:noodle_timer_f/timer_setting_page.dart';
 import 'dart:async';
 
-import 'package:sensors_plus/sensors_plus.dart';
-
-// import 'package:flutter_test/flutter_test.dart';
-
-// void main() async {
-//   test('completer', () async {
-//     Completer completer = Completer();//2
-//
-//     List result = [];
-//
-//     // 1
-//     Future.delayed(const Duration(seconds: 1)).then((value) {
-//       result.add('delayed');
-//       expect(completer.isCompleted, false);
-//       completer.complete('delay finished');//3
-//       expect(completer.isCompleted, true);
-//     });
-//
-//     result.add('before future');
-//     result.add(await completer.future); //4
-//     result.add('after future');
-//
-//     expect(result.length, 4);
-//     expect(result[0], 'before future');
-//     expect(result[1], 'delayed');
-//     expect(result[2], 'delay finished');
-//     expect(result[3], 'after future');
-//   });
-// }
-
-
-//TODO: use "complete" for get enough time to display timer 参考https://flutter.salon/dart/completer/
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations(
+  WidgetsFlutterBinding.ensureInitialized();//main() async と使うために必要
+  SystemChrome.setPreferredOrientations(//デバイスの加速度計を使うために必要
       [
         DeviceOrientation.portraitUp,
         DeviceOrientation.portraitDown,
       ],
   );
-  await Alarm.init();
+  await Alarm.init();//Alarm library を使うために必要
+  await FlutterVolumeController.updateShowSystemUI(true);//現在の音量を取得するために必要
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // final TimerStorage timerStorage;
-  const MyApp({Key? key}) : super(key: key);
+class MyApp extends StatelessWidget{
+  const MyApp({super.key});
 
-  // This widget is the root of your application.
+  // This widget is the root of this app
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter Noodle Timer',
       theme: ThemeData(
-        // useMaterial3: false,
-        primarySwatch: Colors.green,
+        primarySwatch: Colors.red,
       ),
-      initialRoute: '/',
+      initialRoute: '/timer_ticking',
       routes: {
-        '/': (context) =>
-            CountDownPage(
+        '/timer_ticking': (context) =>
+            CountDownPage(//タイマーの表示・バックグラウンドでの動作　を実行します
                 timerStorage: TimerStorage(),
                 onReset: () => Navigator.of(context).pushNamedAndRemoveUntil('/timer_setting',(_)=>false),
             ),
         '/timer_setting': (context) =>
-            TimerSettingPage(
+            TimerSettingPage(//新たなタイマーの実行，タイマー時間設定，タイマー時間保存　を行う画面を表示します
                 timerStorage: TimerStorage(),
-                onStartTimer: () => Navigator.of(context).pushNamed('/'),
-            )
+                onStartTimer: () => Navigator.of(context).pushNamedAndRemoveUntil('/timer_ticking', (_)=>false),
+            ),
       }
     );
   }
