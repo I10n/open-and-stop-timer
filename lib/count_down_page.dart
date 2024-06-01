@@ -41,6 +41,7 @@ class _CountDownPageState extends State<CountDownPage> {
 
   @override
   void initState() {
+    DateTime now = DateTime.now();
     super.initState();
     if (Alarm.android) { //Androidの権限リクエストする
       checkAndroidNotificationPermission();
@@ -53,7 +54,7 @@ class _CountDownPageState extends State<CountDownPage> {
         .then((int duration) =>
         setState(() {
           //タイマーの完了時刻を設定
-          _dateTime = DateTime.now().add(Duration(seconds: duration - LOADING));
+          _dateTime = now.add(Duration(seconds: duration));
           //画面に表示するStopWatchTimerを設定
           _stopWatchTimer = StopWatchTimer(
             mode: StopWatchMode.countDown,
